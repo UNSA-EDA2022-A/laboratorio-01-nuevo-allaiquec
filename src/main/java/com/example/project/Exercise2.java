@@ -10,41 +10,80 @@ public class Exercise2 {
 		Scanner sc = new Scanner(System.in);
 		while (true) {
 
-            int a [] = new int [7];
-            for(int i = 0; i < 7; i++){
-                int n = sc.nextInt();
-                a[i] = n;
-            }
+			int n = sc.nextInt(), suma = 0;
+			int a[] = new int[n];
+
+			for (int i = 0; i < n; i++) {			
+				a[i] = sc.nextInt();
+			}
+
+			suma = sc.nextInt();
+			suma = suma - nuevSuma(a);
 			
-			System.out.println(obj.getMenorNumeroSaltos(a));			
+			conversionCero(a);
+			System.out.println(obj.esSubconjuntoSumaExt(a, suma));
 		}
 	}
-
-	public Integer getMenorNumeroSaltos(int a []) {
-
-		int numSaltos = 0,puntos = 0;
+	public boolean esSubconjuntoSumaExt(int conjunto[], int suma) {
+		// Casos base
+		if (suma == 0)
+			return true;
+		/*if (n == conjunto.length)
+			return false;
+		/* verificamos si conseguimos la suma por alguna de las siguientes formas:
+		(a) incluyendo el primer elemento
+		(b) excluyendo el primer elemento esSubconjuntoSumaExt2(conjunto, 0, suma - conjunto[0]) || */
+		return esSubconjuntoSumaExt2(conjunto, 0, suma );
 		
-		for(int i = a.length-1; i >= 0; i--) {
-			if(i == 0) {
-				
-			}else {
-				if(a[i]-a[i-1] > 50) 
-					return -1;	
+		
+	}
+	
+	public boolean esSubconjuntoSumaExt2(int conjunto[], int n, int suma) {
+		// Casos base
+		if (suma == 0)
+			return true;
+		if (n == conjunto.length)
+			return false;
+		/* verificamos si conseguimos la suma por alguna de las siguientes formas:
+		(a) incluyendo el primer elemento
+		(b) excluyendo el primer elemento */
+		return esSubconjuntoSumaExt2(conjunto, n + 1, suma - conjunto[n]) || esSubconjuntoSumaExt2(conjunto, n + 1, suma );
+		
+		
+	}
+	//Si encontramos un numero 1, tenemos que fijarnos que el de adelante sea multiplo de 7
+	public static int nuevSuma(int[] arr) {
+		int sum = 0;
+		for (int i = 1; i < arr.length; i++) {
+			if(arr[i] != 1 && arr[i-1]%7 == 0) {
+				sum =sum + arr[i-1];
 			}
+			
 		}
+		return sum;
 		
-		for(int i = 0; i<a.length; i++) {
-			if(puntos + 50 >= a[i] ) {
-				if(i==6) {
-					numSaltos++;
-					puntos = a[i];
+		/*int sum = 0;
+		for (int i = 0; i < arr.length; i++) {
+			if (arr[i] % 7 == 0) {
+				if(i != arr.length-1) {
+					if(arr[i+1] != 1) {
+						sum = sum +  arr[i];
+					}
 				}
-			}else {
-				numSaltos++;
-				puntos = a[i-1];
-				i--;
 			}
+		
 		}
-		return numSaltos;
+		return sum;*/
 	}
+	
+	//Convierte los numeros 7 a ceros
+	public static int[] conversionCero(int[] arr) {	
+		for (int i = 0; i < arr.length; i++) {
+			if (arr[i] % 7 == 0) {
+				arr[i] = 0;
+			}		
+		}
+		return arr;
+	}
+	
 }
